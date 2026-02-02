@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SuperAdminUsersPage.css';
 
 const SuperAdminUsersPage: React.FC = () => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
 
   const users = [
     {
@@ -26,8 +28,180 @@ const SuperAdminUsersPage: React.FC = () => {
       role: 'Viewer / Support Executive',
       username: 'rohan.verma',
       status: 'active'
+    },
+    {
+      id: 4,
+      name: 'Priya Gupta',
+      role: 'Admin / Marketing Lead',
+      username: 'priya.gupta',
+      status: 'active'
+    },
+    {
+      id: 5,
+      name: 'Vikram Singh',
+      role: 'Manager / Operations Manager',
+      username: 'vikram.singh',
+      status: 'active'
+    },
+    {
+      id: 6,
+      name: 'Anjali Patel',
+      role: 'Viewer / Customer Service',
+      username: 'anjali.patel',
+      status: 'inactive'
+    },
+    {
+      id: 7,
+      name: 'Rahul Kumar',
+      role: 'Admin / Technical Lead',
+      username: 'rahul.kumar',
+      status: 'active'
+    },
+    {
+      id: 8,
+      name: 'Kavya Reddy',
+      role: 'Manager / Product Manager',
+      username: 'kavya.reddy',
+      status: 'active'
+    },
+    {
+      id: 9,
+      name: 'Aditya Joshi',
+      role: 'Viewer / Quality Analyst',
+      username: 'aditya.joshi',
+      status: 'inactive'
+    },
+    {
+      id: 10,
+      name: 'Sneha Iyer',
+      role: 'Admin / HR Manager',
+      username: 'sneha.iyer',
+      status: 'active'
+    },
+    {
+      id: 11,
+      name: 'Karan Malhotra',
+      role: 'Manager / Finance Manager',
+      username: 'karan.malhotra',
+      status: 'active'
+    },
+    {
+      id: 12,
+      name: 'Pooja Desai',
+      role: 'Viewer / Data Analyst',
+      username: 'pooja.desai',
+      status: 'inactive'
+    },
+    {
+      id: 13,
+      name: 'Siddharth Rao',
+      role: 'Admin / Business Lead',
+      username: 'siddharth.rao',
+      status: 'active'
+    },
+    {
+      id: 14,
+      name: 'Meera Nair',
+      role: 'Manager / Creative Manager',
+      username: 'meera.nair',
+      status: 'active'
+    },
+    {
+      id: 15,
+      name: 'Amit Shah',
+      role: 'Viewer / Research Associate',
+      username: 'amit.shah',
+      status: 'inactive'
+    },
+    {
+      id: 16,
+      name: 'Divya Kapoor',
+      role: 'Admin / Project Manager',
+      username: 'divya.kapoor',
+      status: 'active'
+    },
+    {
+      id: 17,
+      name: 'Ravi Patel',
+      role: 'Manager / Logistics Manager',
+      username: 'ravi.patel',
+      status: 'active'
+    },
+    {
+      id: 18,
+      name: 'Ishita Chopra',
+      role: 'Viewer / Content Writer',
+      username: 'ishita.chopra',
+      status: 'active'
+    },
+    {
+      id: 19,
+      name: 'Manish Gupta',
+      role: 'Admin / Operations Director',
+      username: 'manish.gupta',
+      status: 'inactive'
+    },
+    {
+      id: 20,
+      name: 'Tanvi Sharma',
+      role: 'Manager / Brand Manager',
+      username: 'tanvi.sharma',
+      status: 'active'
     }
   ];
+
+  // Pagination logic
+  const totalPages = Math.ceil(users.length / usersPerPage);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('...');
+      } else if (currentPage >= totalPages - 2) {
+        pageNumbers.push('...');
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pageNumbers.push(i);
+        }
+      } else {
+        pageNumbers.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('...');
+      }
+    }
+    
+    return pageNumbers;
+  };
 
   return (
     <div className="superadmin-users-page">
@@ -86,7 +260,7 @@ const SuperAdminUsersPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {currentUsers.map((user) => (
                 <tr key={user.id}>
                   <td className="user-name">{user.name}</td>
                   <td className="user-role">{user.role}</td>
@@ -114,6 +288,41 @@ const SuperAdminUsersPage: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="pagination">
+          <button 
+            className="pagination-arrow" 
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          
+          {renderPageNumbers().map((page, index) => (
+            page === '...' ? (
+              <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+                .....
+              </span>
+            ) : (
+              <button
+                key={page}
+                className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+                onClick={() => handlePageChange(page as number)}
+              >
+                {page}
+              </button>
+            )
+          ))}
+          
+          <button 
+            className="pagination-arrow" 
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
         </div>
       </main>
     </div>

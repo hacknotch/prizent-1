@@ -10,8 +10,6 @@ import AddUserPage from './components/AddUserPage';
 import EditUserPage from './components/EditUserPage';
 import MarketplacesListPage from './components/marketplaces/MarketplacesListPage';
 import AddMarketplacePage from './components/marketplaces/AddMarketplacePage';
-import ProductsListPage from './components/ProductsListPage';
-import AddProductPage from './components/AddProductPage';
 import CommonLayout from './components/CommonLayout';
 
 const App: React.FC = () => {
@@ -28,8 +26,6 @@ const App: React.FC = () => {
 
           <Route path="/brands" element={<BrandsListPage />} />
           <Route path="/categories" element={<CategoriesListPage />} />
-          <Route path="/products" element={<ProductsListPage />} />
-          <Route path="/products/add" element={<AddProductPage />} />
           <Route path="/marketplaces" element={<MarketplacesListPage />} />
           <Route path="/marketplaces/add" element={<AddMarketplacePage />} />
           <Route path="/add-brand" element={<AddBrandPage />} />
