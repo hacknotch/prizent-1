@@ -1,4 +1,4 @@
-  import React from 'react';
+  import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductsListPage.css';
 import productThumb from '../assets/brand_logo.png';
@@ -51,11 +51,135 @@ const products = [
     category: 'Trousers',
     units: 0,
     status: 'Non-Seller'
+  },
+  {
+    id: 7,
+    name: 'Classic Polo Shirt – Navy',
+    sku: 'CLT-PL-042',
+    category: 'Polo Shirts',
+    units: 150,
+    status: 'Top Seller'
+  },
+  {
+    id: 8,
+    name: 'Fleece Joggers – Black',
+    sku: 'CLT-JG-056',
+    category: 'Joggers',
+    units: 90,
+    status: 'Avg Seller'
+  },
+  {
+    id: 9,
+    name: 'Graphic Print T-Shirt – Red',
+    sku: 'CLT-TS-067',
+    category: 'T-Shirts',
+    units: 200,
+    status: 'Top Seller'
+  },
+  {
+    id: 10,
+    name: 'Leather Jacket – Brown',
+    sku: 'CLT-JK-078',
+    category: 'Jackets',
+    units: 35,
+    status: 'Avg Seller'
+  },
+  {
+    id: 11,
+    name: 'Chino Shorts – Khaki',
+    sku: 'CLT-SH-089',
+    category: 'Shorts',
+    units: 110,
+    status: 'Top Seller'
+  },
+  {
+    id: 12,
+    name: 'Wool Blend Sweater – Maroon',
+    sku: 'CLT-SW-091',
+    category: 'Sweaters',
+    units: 75,
+    status: 'Avg Seller'
+  },
+  {
+    id: 13,
+    name: 'Cargo Pants – Olive',
+    sku: 'CLT-CP-102',
+    category: 'Pants',
+    units: 65,
+    status: 'Avg Seller'
+  },
+  {
+    id: 14,
+    name: 'Bomber Jacket – Black',
+    sku: 'CLT-BJ-114',
+    category: 'Jackets',
+    units: 45,
+    status: 'Top Seller'
+  },
+  {
+    id: 15,
+    name: 'Button-Down Shirt – Sky Blue',
+    sku: 'CLT-BD-125',
+    category: 'Shirts',
+    units: 85,
+    status: 'Avg Seller'
+  },
+  {
+    id: 16,
+    name: 'Track Pants – Grey',
+    sku: 'CLT-TP-136',
+    category: 'Track Pants',
+    units: 120,
+    status: 'Top Seller'
+  },
+  {
+    id: 17,
+    name: 'Cotton Vest – White',
+    sku: 'CLT-VT-147',
+    category: 'Vests',
+    units: 55,
+    status: 'Avg Seller'
+  },
+  {
+    id: 18,
+    name: 'Denim Jacket – Light Blue',
+    sku: 'CLT-DJ-158',
+    category: 'Jackets',
+    units: 95,
+    status: 'Top Seller'
+  },
+  {
+    id: 19,
+    name: 'Flannel Shirt – Red Check',
+    sku: 'CLT-FS-169',
+    category: 'Shirts',
+    units: 70,
+    status: 'Avg Seller'
+  },
+  {
+    id: 20,
+    name: 'Formal Blazer – Navy',
+    sku: 'CLT-BZ-180',
+    category: 'Blazers',
+    units: 30,
+    status: 'Avg Seller'
   }
 ];
 
 const ProductsListPage: React.FC = () => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="products-bg">
@@ -89,7 +213,7 @@ const ProductsListPage: React.FC = () => {
         <div className="products-toolbar">
           <div className="products-title-block">
             <h2 className="products-list-title">Products List</h2>
-            <span className="products-list-count">60 Total number to items</span>
+            <span className="products-list-count">{products.length} Total number of items</span>
           </div>
 
           <div className="products-toolbar-actions">
@@ -120,7 +244,7 @@ const ProductsListPage: React.FC = () => {
               <div>Actions</div>
             </div>
 
-            {products.map((p) => (
+            {currentProducts.map((p) => (
               <div className="products-table-row" key={p.id}>
                 <div className="product-cell">
                   <img className="product-thumb" src={productThumb} alt="" />
@@ -151,20 +275,36 @@ const ProductsListPage: React.FC = () => {
           <div className="pagination">
             <div className="show-30" role="button" tabIndex={0}>
               <span className="show-label">Show</span>
-              <span className="show-value">30</span>
+              <span className="show-value">{itemsPerPage}</span>
               <svg className="show-caret" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1.5L6 6.5L11 1.5" stroke="#4A4A4A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <div className="page-numbers">
-              <span className="page-prev">&lt;</span>
-              <span className="page-current">1</span>
-              <span className="page">2</span>
-              <span className="page">3</span>
-              <span className="page">4</span>
-              <span className="page">5</span>
-              <span className="page-dots">......</span>
-              <span className="page-next">&gt;</span>
+              <span 
+                className="page-prev" 
+                style={{ cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}
+                onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+              >
+                &lt;
+              </span>
+              {[...Array(totalPages)].map((_, index) => (
+                <span 
+                  key={index + 1}
+                  className={currentPage === index + 1 ? 'page-current' : 'page'}
+                  onClick={() => handlePageChange(index + 1)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {index + 1}
+                </span>
+              ))}
+              <span 
+                className="page-next"
+                style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', opacity: currentPage === totalPages ? 0.5 : 1 }}
+                onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+              >
+                &gt;
+              </span>
             </div>
           </div>
         </div>

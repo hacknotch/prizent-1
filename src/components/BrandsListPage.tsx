@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BrandsListPage.css';
 import brandLogo from '../assets/brand_logo.png';
 
 const BrandsListPage: React.FC = () => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const brandsPerPage = 8;
 
   const brands = [
     {
@@ -48,8 +50,159 @@ const BrandsListPage: React.FC = () => {
       description: 'Premium designer fashion line',
       status: 'active',
       logo: brandLogo
+    },
+    {
+      id: 7,
+      name: 'StyleHub',
+      description: 'Contemporary fashion collective',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 8,
+      name: 'DenimWorks',
+      description: 'Premium denim and casual wear',
+      status: 'inactive',
+      logo: brandLogo
+    },
+    {
+      id: 9,
+      name: 'EleganceWear',
+      description: 'Formal and business attire',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 10,
+      name: 'TrendSetters',
+      description: 'Fashion-forward youth brand',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 11,
+      name: 'ComfortZone',
+      description: 'Loungewear and comfort clothing',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 12,
+      name: 'VogueCollection',
+      description: 'High-end designer apparel',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 13,
+      name: 'ActiveLife',
+      description: 'Fitness and sports lifestyle',
+      status: 'inactive',
+      logo: brandLogo
+    },
+    {
+      id: 14,
+      name: 'ClassicStyle',
+      description: 'Timeless wardrobe essentials',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 15,
+      name: 'FusionWear',
+      description: 'Indo-western fusion clothing',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 16,
+      name: 'StreetStyle',
+      description: 'Urban street fashion brand',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 17,
+      name: 'GreenThread',
+      description: 'Sustainable eco-friendly fashion',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 18,
+      name: 'RoyalCollection',
+      description: 'Luxury ethnic wear line',
+      status: 'inactive',
+      logo: brandLogo
+    },
+    {
+      id: 19,
+      name: 'YouthVibes',
+      description: 'Trendy college wear brand',
+      status: 'active',
+      logo: brandLogo
+    },
+    {
+      id: 20,
+      name: 'PremiumThreads',
+      description: 'Exclusive designer collection',
+      status: 'active',
+      logo: brandLogo
     }
   ];
+
+  // Pagination logic
+  const totalPages = Math.ceil(brands.length / brandsPerPage);
+  const indexOfLastBrand = currentPage * brandsPerPage;
+  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
+  const currentBrands = brands.slice(indexOfFirstBrand, indexOfLastBrand);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('...');
+      } else if (currentPage >= totalPages - 2) {
+        pageNumbers.push('...');
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pageNumbers.push(i);
+        }
+      } else {
+        pageNumbers.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('...');
+      }
+    }
+    
+    return pageNumbers;
+  };
 
   return (
     <div className="brands-page">
@@ -108,21 +261,21 @@ const BrandsListPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {brands.map((brand) => (
+              {currentBrands.map((brand) => (
                 <tr key={brand.id}>
-                  <td>
+                  <td data-label="Brand: ">
                     <div className="brand-logo">
                       <img src={brand.logo} alt={brand.name} />
                     </div>
                   </td>
-                  <td className="brand-name">{brand.name}</td>
-                  <td className="brand-description">{brand.description}</td>
-                  <td>
+                  <td className="brand-name" data-label="Brand: ">{brand.name}</td>
+                  <td className="brand-description" data-label="Description: ">{brand.description}</td>
+                  <td data-label="Status: ">
                     <span className={`status-badge ${brand.status}`}>
                       {brand.status === 'active' ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Actions: ">
                     <div className="action-buttons">
                       <button className="action-btn edit-btn">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -140,26 +293,41 @@ const BrandsListPage: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
 
-          {/* Pagination */}
-          <div className="pagination">
-            <div className="pagination-center">
-              <button className="page-btn">&lt;</button>
-              <button className="page-btn active">1</button>
-              <button className="page-btn">2</button>
-              <button className="page-btn">3</button>
-              <button className="page-btn">4</button>
-              <button className="page-btn">5</button>
-              <span className="page-dots">......</span>
-              <button className="page-btn">&gt;</button>
-            </div>
-            <div className="pagination-right">
-              <span>Show 6</span>
-              <svg width="10" height="5" viewBox="0 0 10 5" fill="none">
-                <path d="M0 0L5 5L10 0" fill="#454545"/>
-              </svg>
-            </div>
-          </div>
+        {/* Pagination */}
+        <div className="pagination">
+          <button 
+            className="pagination-arrow" 
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          
+          {renderPageNumbers().map((page, index) => (
+            page === '...' ? (
+              <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+                .....
+              </span>
+            ) : (
+              <button
+                key={page}
+                className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+                onClick={() => handlePageChange(page as number)}
+              >
+                {page}
+              </button>
+            )
+          ))}
+          
+          <button 
+            className="pagination-arrow" 
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
         </div>
       </main>
     </div>

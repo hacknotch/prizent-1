@@ -62,11 +62,133 @@ const CategoriesListPage: React.FC = () => {
       subCategory: 'Men',
       attributes: 'Size, Fit, Fabric',
       status: 'Active'
+    },
+    {
+      id: 7,
+      parentCategory: 'Bottomwear',
+      category: 'Shorts',
+      subCategory: 'Men, Women, Unisex',
+      attributes: 'Size, Fit, Waist',
+      status: 'Active'
+    },
+    {
+      id: 8,
+      parentCategory: 'Topwear',
+      category: 'Shirt',
+      subCategory: 'Men',
+      attributes: 'Size, Fit, Fabric, Collar',
+      status: 'Active'
+    },
+    {
+      id: 9,
+      parentCategory: 'Innerwear',
+      category: 'Vest',
+      subCategory: 'Men, Women',
+      attributes: 'Size, Fabric',
+      status: 'Inactive'
+    },
+    {
+      id: 10,
+      parentCategory: 'Accessories',
+      category: 'Belt',
+      subCategory: 'Unisex',
+      attributes: 'Size, Material, Buckle',
+      status: 'Active'
+    },
+    {
+      id: 11,
+      parentCategory: 'Footwear',
+      category: 'Sandals',
+      subCategory: 'Men, Women',
+      attributes: 'Size, Material, Sole',
+      status: 'Active'
+    },
+    {
+      id: 12,
+      parentCategory: 'Sportswear',
+      category: 'Track Pants',
+      subCategory: 'Men, Women',
+      attributes: 'Size, Fit, Fabric',
+      status: 'Active'
+    },
+    {
+      id: 13,
+      parentCategory: 'Ethnic Wear',
+      category: 'Saree',
+      subCategory: 'Women',
+      attributes: 'Fabric, Pattern, Length',
+      status: 'Active'
+    },
+    {
+      id: 14,
+      parentCategory: 'Winterwear',
+      category: 'Jacket',
+      subCategory: 'Men, Women, Unisex',
+      attributes: 'Size, Fit, Material',
+      status: 'Inactive'
+    },
+    {
+      id: 15,
+      parentCategory: 'Accessories',
+      category: 'Sunglasses',
+      subCategory: 'Unisex',
+      attributes: 'Frame, Lens, UV Protection',
+      status: 'Active'
+    },
+    {
+      id: 16,
+      parentCategory: 'Footwear',
+      category: 'Formal Shoes',
+      subCategory: 'Men',
+      attributes: 'Size, Material, Style',
+      status: 'Active'
+    },
+    {
+      id: 17,
+      parentCategory: 'Sportswear',
+      category: 'Gym T-Shirt',
+      subCategory: 'Men, Women',
+      attributes: 'Size, Fit, Fabric',
+      status: 'Active'
+    },
+    {
+      id: 18,
+      parentCategory: 'Nightwear',
+      category: 'Pyjama',
+      subCategory: 'Men, Women',
+      attributes: 'Size, Fit, Fabric',
+      status: 'Active'
+    },
+    {
+      id: 19,
+      parentCategory: 'Ethnic Wear',
+      category: 'Salwar Suit',
+      subCategory: 'Women',
+      attributes: 'Size, Fabric, Pattern',
+      status: 'Inactive'
+    },
+    {
+      id: 20,
+      parentCategory: 'Accessories',
+      category: 'Watch',
+      subCategory: 'Unisex',
+      attributes: 'Strap, Dial, Type',
+      status: 'Active'
     }
   ]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
+  const [itemsPerPage] = useState(8);
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCategories = categories.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(categories.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="categories-page">
@@ -105,7 +227,7 @@ const CategoriesListPage: React.FC = () => {
         <div className="categories-header">
           <div className="header-text">
             <h2 className="categories-title">Categories List</h2>
-            <p className="categories-count">8 Total number to items</p>
+            <p className="categories-count">{categories.length} Total number of items</p>
           </div>
           
           <button className="add-category-btn" onClick={() => navigate('/add-category')}>
@@ -130,7 +252,7 @@ const CategoriesListPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {categories.map((category) => (
+              {currentCategories.map((category) => (
                 <tr key={category.id}>
                   <td>{category.parentCategory}</td>
                   <td>{category.category}</td>
@@ -163,23 +285,36 @@ const CategoriesListPage: React.FC = () => {
           {/* Pagination */}
           <div className="pagination">
             <div className="pagination-info">
-              <span>Show 6</span>
+              <span>Show {itemsPerPage}</span>
               <svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 0L5 5L10 0H0Z" fill="#454545"/>
               </svg>
             </div>
 
             <div className="pagination-controls">
-              <button className="page-arrow" disabled={currentPage === 1}>
+              <button 
+                className="page-arrow" 
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
                 &lt;
               </button>
-              <button className="page-number active">1</button>
-              <button className="page-number">2</button>
-              <button className="page-number">3</button>
-              <button className="page-number">4</button>
-              <button className="page-number">5</button>
-              <span className="page-ellipsis">......</span>
-              <button className="page-arrow">&gt;</button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button 
+                  key={index + 1}
+                  className={`page-number ${currentPage === index + 1 ? 'active' : ''}`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button 
+                className="page-arrow"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                &gt;
+              </button>
             </div>
           </div>
         </div>

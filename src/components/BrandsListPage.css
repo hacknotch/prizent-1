@@ -174,8 +174,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 34px 40px;
-  overflow-y: auto;
+  padding: 1px 30px;
+  overflow-y: hidden;
+ 
 }
 
 /* Header */
@@ -183,8 +184,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
+  margin-bottom: 2px;
+  padding-bottom: 2px;
   border-bottom: 0.75px solid #E4E4E4;
 }
 
@@ -228,7 +229,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 28px;
+  margin-top: -55px;
+  margin-bottom: 0px;
 }
 
 .page-title {
@@ -277,6 +279,7 @@
   border-radius: 13px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.03);
   padding: 25px 30px 30px 30px;
+  min-height: 600px;
 }
 
 .brands-table {
@@ -323,7 +326,7 @@
 }
 
 .brands-table tbody td {
-  padding: 27px 0;
+  padding: 10px 0;
   font-family: 'Murecho', sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -406,61 +409,627 @@
   height: 16px;
 }
 
-/* Pagination */
-.pagination {
+/* Pagination Styles */
+.brands-page .pagination {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  align-items: center;
-  margin-top: 46px;
-  gap: 20px;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 0 25px 20px 25px;
 }
 
-.pagination-center {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pagination-right {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  font-family: 'Murecho', sans-serif;
-  font-size: 20px;
-  color: #BCBBBB;
-  cursor: pointer;
-}
-
-.page-btn {
-  background: none;
+.brands-page .pagination-arrow,
+.brands-page .pagination-number {
+  background: transparent;
   border: none;
   font-family: 'Murecho', sans-serif;
-  font-size: 20px;
-  color: #BCBBBB;
+  font-size: 16px;
+  font-weight: 400;
+  color: #B4B4B4;
   cursor: pointer;
-  padding: 4px 8px;
-  min-width: 30px;
-  transition: color 0.2s;
+  padding: 8px 12px;
+  min-width: 36px;
+  transition: all 0.2s;
 }
 
-.page-btn:hover {
-  color: #454545;
+.brands-page .pagination-arrow:hover:not(:disabled),
+.brands-page .pagination-number:hover {
+  color: #1E1E1E;
 }
 
-.page-btn.active {
-  color: #454545;
-  font-weight: 500;
+.brands-page .pagination-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
-.page-dots {
+.brands-page .pagination-number.active {
+  color: #1E1E1E;
+  font-weight: 600;
+}
+
+.brands-page .pagination-ellipsis {
   font-family: 'Murecho', sans-serif;
-  font-size: 20px;
-  color: #BCBBBB;
+  font-size: 16px;
+  color: #B4B4B4;
+  padding: 8px 4px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Large Desktop (1920px and above) */
+@media (min-width: 1920px) {
+  .brands-page .page-title {
+    font-size: 28px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 40px 60px;
+  }
+  
   .brands-table-container {
+    padding: 30px 40px 40px 40px;
+  }
+  
+  .brands-page .brands-table thead th {
+    font-size: 16px;
+    padding: 20px 0;
+  }
+  
+  .brands-page .brands-table tbody td {
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}
+
+/* Desktop (1440px to 1920px) */
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .brands-page .page-title {
+    font-size: 26px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 35px 50px;
+  }
+  
+  .brands-table-container {
+    padding: 28px 35px 35px 35px;
+  }
+}
+
+/* Laptop (1200px to 1440px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .brands-page .page-title {
+    font-size: 22px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 30px 40px;
+  }
+  
+  .brands-table-container {
+    padding: 25px 30px 30px 30px;
+  }
+  
+  .brands-page .brands-table thead th {
+    font-size: 14px;
+  }
+  
+  .brands-page .brands-table tbody td {
+    font-size: 14px;
+  }
+}
+
+/* Medium Laptop/Tablet Landscape (1024px to 1200px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .brands-page .sidebar {
+    width: 220px;
+  }
+  
+  .brands-page .main-content {
+    margin-left: 220px;
+  }
+  
+  .brands-page .page-title {
+    font-size: 20px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 25px 30px;
+  }
+  
+  .brands-table-container {
+    padding: 20px 25px 25px 25px;
     overflow-x: auto;
+  }
+  
+  .brands-page .brands-table {
+    min-width: 900px;
+  }
+  
+  .brands-page .brands-table thead th {
+    font-size: 13px;
+    padding: 15px 0;
+  }
+  
+  .brands-page .brands-table tbody td {
+    font-size: 13px;
+    padding: 8px 0;
+  }
+  
+  .brands-page .brand-logo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .brands-page .add-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+}
+
+/* Tablet (768px to 1024px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .brands-page .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 15px 20px;
+  }
+  
+  .brands-page .main-content {
+    margin-left: 0;
+    padding-top: 0;
+  }
+  
+  .brands-page .sidebar-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .brands-page .menu-item {
+    white-space: nowrap;
+    padding: 10px 15px;
+  }
+  
+  .brands-page .page-title {
+    font-size: 20px;
+  }
+  
+  .brands-page .page-subtitle {
+    font-size: 12px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 20px 25px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .brands-page .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .brands-table-container {
+    padding: 20px;
+    overflow-x: auto;
+  }
+  
+  .brands-page .brands-table {
+    min-width: 800px;
+  }
+  
+  .brands-page .brands-table thead th {
+    font-size: 13px;
+    padding: 12px 0;
+  }
+  
+  .brands-page .brands-table tbody td {
+    font-size: 13px;
+    padding: 8px 0;
+  }
+  
+  .brands-page .brand-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .brands-page .pagination {
+    padding: 15px 20px;
+  }
+}
+
+/* Mobile Landscape (600px to 768px) */
+@media (min-width: 600px) and (max-width: 767px) {
+  .brands-page .sidebar {
+    display: none;
+  }
+  
+  .brands-page .main-content {
+    margin-left: 0;
+  }
+  
+  .brands-page .page-header {
+    padding: 15px 20px;
+  }
+  
+  .brands-page .breadcrumb {
+    font-size: 12px;
+  }
+  
+  .brands-page .page-title {
+    font-size: 18px;
+  }
+  
+  .brands-page .page-subtitle {
+    font-size: 12px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 20px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .brands-page .add-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+  }
+  
+  .brands-table-container {
+    padding: 15px;
+    background: transparent;
+  }
+  
+  /* Transform table to card layout */
+  .brands-page .brands-table {
+    display: block;
+    min-width: auto;
+  }
+  
+  .brands-page .brands-table thead {
+    display: none;
+  }
+  
+  .brands-page .brands-table tbody {
+    display: block;
+  }
+  
+  .brands-page .brands-table tbody tr {
+    display: block;
+    background: #FAFBFF;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .brands-page .brands-table tbody td {
+    display: block;
+    padding: 8px 0;
+    text-align: left;
+    border: none;
+    font-size: 13px;
+  }
+  
+  .brands-page .brands-table tbody td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    display: inline-block;
+    width: 120px;
+    color: #656565;
+  }
+  
+  .brands-page .brands-table tbody td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .brands-page .brand-logo {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .brands-page .action-buttons {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+  
+  .brands-page .pagination {
+    padding: 15px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .brands-page .pagination-number,
+  .brands-page .pagination-arrow {
+    min-width: 36px;
+    height: 36px;
+  }
+}
+
+/* Mobile Portrait (320px to 600px) */
+@media (min-width: 320px) and (max-width: 599px) {
+  .brands-page .sidebar {
+    display: none;
+  }
+  
+  .brands-page .main-content {
+    margin-left: 0;
+  }
+  
+  .brands-page .page-header {
+    padding: 12px 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .brands-page .breadcrumb {
+    font-size: 11px;
+    width: 100%;
+  }
+  
+  .brands-page .header-actions {
+    gap: 8px;
+  }
+  
+  .brands-page .icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .brands-page .page-title {
+    font-size: 18px;
+  }
+  
+  .brands-page .page-subtitle {
+    font-size: 11px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 15px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .brands-page .add-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  
+  .brands-table-container {
+    padding: 12px;
+    background: transparent;
+    min-height: auto;
+  }
+  
+  /* Transform table to card layout */
+  .brands-page .brands-table {
+    display: block;
+    min-width: auto;
+  }
+  
+  .brands-page .brands-table thead {
+    display: none;
+  }
+  
+  .brands-page .brands-table tbody {
+    display: block;
+  }
+  
+  .brands-page .brands-table tbody tr {
+    display: block;
+    background: #FAFBFF;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .brands-page .brands-table tbody td {
+    display: block;
+    padding: 6px 0;
+    text-align: left;
+    border: none;
+    font-size: 12px;
+  }
+  
+  .brands-page .brands-table tbody td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    display: inline-block;
+    width: 100px;
+    color: #656565;
+    font-size: 11px;
+  }
+  
+  .brands-page .brands-table tbody td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  
+  .brands-page .brand-logo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .brands-page .action-buttons {
+    justify-content: flex-start;
+    margin-top: 8px;
+    gap: 8px;
+  }
+  
+  .brands-page .action-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .brands-page .pagination {
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+  
+  .brands-page .pagination-number,
+  .brands-page .pagination-arrow {
+    min-width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+  
+  .brands-page .pagination-ellipsis {
+    font-size: 14px;
+  }
+}
+
+/* Extra Small Mobile (320px and below) */
+@media (max-width: 319px) {
+  .brands-page .sidebar {
+    display: none;
+  }
+  
+  .brands-page .main-content {
+    margin-left: 0;
+  }
+  
+  .brands-page .page-header {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .brands-page .breadcrumb {
+    font-size: 10px;
+    width: 100%;
+  }
+  
+  .brands-page .icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .brands-page .page-title {
+    font-size: 16px;
+  }
+  
+  .brands-page .page-subtitle {
+    font-size: 10px;
+  }
+  
+  .brands-page .page-title-section {
+    padding: 12px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .brands-page .add-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  
+  .brands-table-container {
+    padding: 10px;
+    background: transparent;
+    min-height: auto;
+  }
+  
+  /* Transform table to card layout */
+  .brands-page .brands-table {
+    display: block;
+    min-width: auto;
+  }
+  
+  .brands-page .brands-table thead {
+    display: none;
+  }
+  
+  .brands-page .brands-table tbody {
+    display: block;
+  }
+  
+  .brands-page .brands-table tbody tr {
+    display: block;
+    background: #FAFBFF;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .brands-page .brands-table tbody td {
+    display: block;
+    padding: 5px 0;
+    text-align: left;
+    border: none;
+    font-size: 11px;
+  }
+  
+  .brands-page .brands-table tbody td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    display: inline-block;
+    width: 90px;
+    color: #656565;
+    font-size: 10px;
+  }
+  
+  .brands-page .brands-table tbody td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  
+  .brands-page .brand-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .brands-page .action-buttons {
+    justify-content: flex-start;
+    margin-top: 6px;
+    gap: 6px;
+  }
+  
+  .brands-page .action-btn {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .brands-page .pagination {
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+  }
+  
+  .brands-page .pagination-number,
+  .brands-page .pagination-arrow {
+    min-width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .brands-page .pagination-ellipsis {
+    font-size: 12px;
   }
 }
