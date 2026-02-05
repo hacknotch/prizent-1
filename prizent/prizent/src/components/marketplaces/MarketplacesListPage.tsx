@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MarketplacesListPage.css";
 
@@ -9,10 +9,74 @@ const marketplaces = [
   { name: "Ajio", mapping: "Mapped", costSlab: "0–799, 800–1499", commission: "20%", status: "Active" },
   { name: "Meesho", mapping: "Mapped", costSlab: "0–499", commission: "10%", status: "Active" },
   { name: "Nykaa Fashion", mapping: "Mapped", costSlab: "1500–2999", commission: "25%", status: "Active" },
+  { name: "Snapdeal", mapping: "Partial", costSlab: "0–599, 600–1199", commission: "12%", status: "Active" },
+  { name: "Tata CLiQ", mapping: "Mapped", costSlab: "500–1499, 1500+", commission: "19%", status: "Active" },
+  { name: "FirstCry", mapping: "Mapped", costSlab: "0–399, 400–799", commission: "16%", status: "Active" },
+  { name: "Shoppers Stop", mapping: "Partial", costSlab: "1000–2499, 2500+", commission: "23%", status: "Inactive" },
+  { name: "Lifestyle", mapping: "Mapped", costSlab: "800–1999, 2000+", commission: "21%", status: "Active" },
+  { name: "Limeroad", mapping: "Partial", costSlab: "0–499, 500–999", commission: "14%", status: "Active" },
+  { name: "Paytm Mall", mapping: "Mapped", costSlab: "0–599, 600–1199", commission: "17%", status: "Inactive" },
+  { name: "ShopClues", mapping: "Partial", costSlab: "0–399, 400–799", commission: "11%", status: "Active" },
+  { name: "Jabong", mapping: "Mapped", costSlab: "999–1999, 2000+", commission: "20%", status: "Active" },
+  { name: "Koovs", mapping: "Partial", costSlab: "500–1499, 1500+", commission: "22%", status: "Inactive" },
+  { name: "Craftsvilla", mapping: "Mapped", costSlab: "0–699, 700–1399", commission: "13%", status: "Active" },
+  { name: "Zivame", mapping: "Mapped", costSlab: "400–999, 1000+", commission: "24%", status: "Active" },
+  { name: "Bewakoof", mapping: "Partial", costSlab: "0–499, 500–999", commission: "15%", status: "Active" },
+  { name: "Clovia", mapping: "Mapped", costSlab: "300–799, 800+", commission: "26%", status: "Active" },
+  { name: "FabIndia", mapping: "Mapped", costSlab: "700–1999, 2000+", commission: "18%", status: "Active" },
+  { name: "Fynd", mapping: "Partial", costSlab: "500–1499, 1500+", commission: "19%", status: "Inactive" },
+  { name: "Pernia's Pop-Up Shop", mapping: "Mapped", costSlab: "2000–4999, 5000+", commission: "28%", status: "Active" },
+  { name: "Caratlane", mapping: "Mapped", costSlab: "5000–14999, 15000+", commission: "12%", status: "Active" },
 ];
 
 const MarketplacesListPage: React.FC = () => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(marketplaces.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentMarketplaces = marketplaces.slice(startIndex, endIndex);
+
+  // Pagination handlers
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const goToPrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, 5);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2);
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="marketplaces-bg">
@@ -46,7 +110,7 @@ const MarketplacesListPage: React.FC = () => {
         <div className="marketplaces-toolbar">
           <div className="marketplaces-title-block">
             <h2 className="marketplace-list-title">Marketplace List</h2>
-            <span className="marketplaces-list-count">8 Total number to items</span>
+            <span className="marketplaces-list-count">{marketplaces.length} Total number to items</span>
           </div>
 
           <button className="add-marketplace-btn" onClick={() => navigate('/marketplaces/add')}>
@@ -68,7 +132,7 @@ const MarketplacesListPage: React.FC = () => {
               <div>Status</div>
               <div>Actions</div>
             </div>
-            {marketplaces.map((m, idx) => (
+            {currentMarketplaces.map((m, idx) => (
               <div className="marketplaces-table-row" key={idx}>
                 <div>{m.name}</div>
                 <div>{m.mapping}</div>
@@ -95,20 +159,39 @@ const MarketplacesListPage: React.FC = () => {
 
           <div className="pagination">
             <div className="show-6">
-              Show 6
+              Show {itemsPerPage}
               <svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1L5 4L9 1" stroke="#454545" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
             <div className="page-numbers">
-              <span className="page-prev">&lt;</span>
-              <span className="page-current">1</span>
-              <span className="page">2</span>
-              <span className="page">3</span>
-              <span className="page">4</span>
-              <span className="page">5</span>
-              <span className="page-dots">......</span>
-              <span className="page-next">&gt;</span>
+              <span 
+                className={`page-prev ${currentPage === 1 ? 'disabled' : ''}`}
+                onClick={goToPrevious}
+                style={{ cursor: currentPage === 1 ? 'not-allowed' : 'pointer', opacity: currentPage === 1 ? 0.5 : 1 }}
+              >
+                &lt;
+              </span>
+              {getPageNumbers().map((page, index) => (
+                <span
+                  key={index}
+                  className={page === currentPage ? 'page-current' : 'page'}
+                  onClick={() => goToPage(page)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {page}
+                </span>
+              ))}
+              {totalPages > 5 && currentPage < totalPages - 2 && (
+                <span className="page-dots">......</span>
+              )}
+              <span 
+                className={`page-next ${currentPage === totalPages ? 'disabled' : ''}`}
+                onClick={goToNext}
+                style={{ cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', opacity: currentPage === totalPages ? 0.5 : 1 }}
+              >
+                &gt;
+              </span>
             </div>
           </div>
         </div>
